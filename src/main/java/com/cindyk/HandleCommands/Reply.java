@@ -1,11 +1,11 @@
-package com.cindyk.HandleCommands;
+package com.cindyk.handlecommands;
 
 /**
  * Created by cindy on 5/2/2015.
  */
 public class Reply {
 
-    public String HandleReply(String data){
+    public String handleReply(String data){
 
         System.out.println("Handling Reply: " + data);
         return "GotReply";
