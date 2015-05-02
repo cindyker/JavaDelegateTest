@@ -1,8 +1,8 @@
 package com.cindyk;
 
-import com.cindyk.HandleCommands.Inquiry;
-import com.cindyk.HandleCommands.Ping;
-import com.cindyk.HandleCommands.Reply;
+import com.cindyk.handlecommands.Inquiry;
+import com.cindyk.handlecommands.Ping;
+import com.cindyk.handlecommands.Reply;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,9 +18,9 @@ import java.util.function.Consumer;
  */
 public class Handler {
 
-    Ping ping;
-    Reply reply;
-    Inquiry inquiry;
+    private Ping ping;
+    private Reply reply;
+    private Inquiry inquiry;
 
     //This MAP will hold the COMMAND and a pointer to the function
     //that knows how to handle that command.
@@ -28,7 +28,7 @@ public class Handler {
 
     public List<String> incomingData;
 
-    Handler(){
+    public Handler() {
         //Java8 Lets us use Function Pointers...
         // This is cool stuff
 
@@ -40,27 +40,27 @@ public class Handler {
         //Create the Command Map
         handles = new HashMap<>();
         //Create an ArrayList with sample incoming data to test with
-        incomingData = new ArrayList<String>();
+        incomingData = new ArrayList<>();
 
         //Load the Test Data into the Array
-        LoadTestData();
+        loadTestData();
 
         //Load the Command Handler functions in to the Map
-        LoadCommandHandlers();
+        loadCommandHandlers();
 
         //Pretend to receive the data. For this test, it means we are flipping thru
         //the array list we filled with test data.
-        ReceiveData();
+        receiveData();
 
     }
 
     //This would likely be done in a thread
     // the main thread would be listening on the command line for commands
     // from the console, like stop and reloadconfig
-    void ReceiveData(){
+    private void receiveData() {
 
         //This is the ForEach statement
-        for(String Message:incomingData) {
+        for (String Message : incomingData) {
 
             //We need to get the Command out of the Message
             //So we can see if we have it to handle
@@ -77,26 +77,26 @@ public class Handler {
     }
 
     //Parse out the Command from the Data
-    String parseMessage(String message){
-
+    private String parseMessage(String message) {
+        
         String command;
-        if(message.contains(" ")){
+        if(message.contains(" ")) {
             command = message.substring(0,message.indexOf(" "));
-        }
-        else return message;
+        } else
+            return message;
 
         return command;
     }
 
     // Load the Message Map with the command handlers
-    void LoadCommandHandlers(){
-        handles.put("PING", ping::HandlePing);
-        handles.put("REPLY", reply::HandleReply);
-        handles.put("INQUIRY", inquiry::HandleInquiry);
+    private void loadCommandHandlers() {
+        handles.put("PING", ping::handlePing);
+        handles.put("REPLY", reply::handleReply);
+        handles.put("INQUIRY", inquiry::handleInquiry);
     }
 
     //Pretend Incoming Data
-    void LoadTestData(){
+    private void loadTestData() {
 
         incomingData.add("INQUIRY did you get this inquiry?");
         incomingData.add("PING This is a ping1...");
@@ -104,6 +104,5 @@ public class Handler {
         incomingData.add("UNKNOWN I am not sure how to handle this...");
         incomingData.add("PING This is a ping2...");
         incomingData.add("PING This is a ping3...");
-
     }
 }
